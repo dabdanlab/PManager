@@ -1,79 +1,74 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using PManager.Entities;
+using PManager.Models;
 using PManager.Services;
 
 namespace PManager.Controllers
 {
     public class AccountController : Controller
     {
-        private IUserService _userService;
+        private readonly AccountServices _accountServices;
 
-        public IActionResult Index()
+        public ActionResult Index()
+        {   
+            return View();
+        }
+
+        public ActionResult Profile()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
 
-        public IActionResult Login(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        private bool ValidateLogin(string UserName, string Password)
+        private bool Validatelogin(string Username, string Password)
         {
             return true;
         }
 
-        public async Task<IActionResult> Login(string UserName, string Password, string returnUrl = null)
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginInfromationModels models,string returnUrl = null)
         {
-            if (!IsAuthenticated(UserName, Password))
-                return View();
+            ViewData["ReturnUrl"] = returnUrl;
 
-            // create claims
-            List<Claim> claims = new List<Claim>
+            if (Validatelogin(models.Username, models.Password))
             {
-                new Claim(ClaimTypes.Name, "Cookie authentication demo"),
-                new Claim(ClaimTypes.Email, UserName)
+                var claims = new List<Claim>
+            {
+                new Claim("user", models.Username),
+                new Claim("password", models.Password)
             };
 
-            // create identity
-            ClaimsIdentity identity = new ClaimsIdentity(claims, "cookie");
+                var userIdentity = new ClaimsIdentity(claims, "login");
 
-            // create principal
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "password")));
 
-            // sign-in
-            await HttpContext.SignInAsync(
-                    scheme: "DemoSecurityScheme",
-                    principal: principal,
-                    properties: new AuthenticationProperties
-                    {
-                        //IsPersistent = true, // for 'remember me' feature
-                        //ExpiresUtc = DateTime.UtcNow.AddMinutes(1)
-                    });
-
-            return Redirect("/");
-        }
-
-        public IActionResult AccessDenied(string returnUrl = null)
-        {
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return Redirect("/Account/Profile");
+                }
+            }
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
-            return RedirectToAction("Login");
-        }
-
-        private bool IsAuthenticated(string UserName, string Password)
-        {
-            return (UserName == "admin" && Password == "admin123");
+            await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
+            return Redirect("Index");
         }
     }
 }

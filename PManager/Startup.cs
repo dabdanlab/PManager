@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,11 +10,14 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using PManager.Services;
 
 namespace PManager
 {
     public class Startup
     {
+        public const string CookieScheme = "YourSchemeName";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,15 +28,19 @@ namespace PManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+            services.AddMvc();
 
+            services.AddAuthentication(CookieScheme) // Sets the default scheme to cookies
+                .AddCookie(CookieScheme, options =>
+                {
+                    
+                    options.AccessDeniedPath = "/Account/Profile";
+                    options.LoginPath = "/Account/Login";
+                });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            // Example of how to customize a particular instance of cookie options and
+            // is able to also use other services.
+            services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ConfigureMyCookie>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

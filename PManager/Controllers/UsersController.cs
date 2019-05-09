@@ -6,27 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using PManager.Entities;
 using PManager.Services;
 using PManager.APP_Start;
+using PManager.Models;
+using MongoDB.Driver;
+using Microsoft.AspNetCore.Identity;
+using System.Data.Entity;
 
 namespace PManager.Controllers
 {
     public class UsersController : Controller
     {
-        private IUserService userService;
-        public IActionResult Index()
+        private readonly UserServices _userServices;
+
+        public UsersController(UserServices userServices)
+        {
+            _userServices = userServices;
+        }
+        
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Register()
+        // POST: CreateUser/Create
+        [HttpPost]
+        public IActionResult Register(UserModels userModels)
         {
-            return View();        }
-    }
+            _userServices.Register(userModels);
+            return null;
+        }
 
-    [HttpPost]
-    public IActionResult Register(RegisterModel model)
-    {
-        
     }
 }
 

@@ -1,34 +1,27 @@
-﻿using PManager.APP_Start;
-using PManager.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using PManager.Models;
+using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using System;
 
 namespace PManager.Services
 {
-    public interface IAccountServies
+    public class AccountServices
     {
-        User Login(string UserName, string Password);
-    }
+        private readonly IMongoCollection<LoginInfromationModels> accCollection;
 
-    public class AccountServices : IAccountServies
-    {
-        private DataContext _context;
-
-        public User Login(string UserName, string Password)
+        public AccountServices(IConfiguration config)
         {
-            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
-                return null;
-            var user = _context.Users.SingleOrDefault(x => x.UserName == UserName);
+            var client = new MongoClient(config.GetConnectionString("PManager"));
+            var database = client.GetDatabase("PManager");
+            accCollection = database.GetCollection<LoginInfromationModels>("UserDb");
+        }
 
-            if (user == null)
-                return null;
-
-            if (Password == null)
-                return null;
-
-            return user;
+        public LoginInfromationModels LoginIn(LoginInfromationModels models)
+        {
+            var W = accCollection.AsQueryable<LoginInfromationModels>().Where(w => w.Username == models.Username && w.Password == models.Password).FirstOrDefault();
+            return W;
         }
     }
 }

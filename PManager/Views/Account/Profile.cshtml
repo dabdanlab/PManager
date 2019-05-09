@@ -1,0 +1,19 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<body>
+    <div>
+        Welcome
+        <br />
+        <br />
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        {
+            <a href="javascript:;" onclick="document.forms[0].submit();">Logout</a>
+        }
+    </div>
+</body>
+</html>

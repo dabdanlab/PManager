@@ -8,6 +8,5 @@ namespace PManager.APP_Start
 {
     public class AutoMapper
     {
-        Create<Entities.User, Entities.User>();
     }
 }
