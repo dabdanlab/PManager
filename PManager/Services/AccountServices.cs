@@ -16,9 +16,9 @@ namespace PManager.Services
 
         public AccountServices(IConfiguration config)
         {
-            var client = new MongoClient(config.GetConnectionString("PManager"));
-            var database = client.GetDatabase("PManager");
-            registerCollection = database.GetCollection<RegisterModels>("AccDb");
+            var client = new MongoClient("mongodb://localhost:27017");
+            IMongoDatabase db = client.GetDatabase("PManager");
+            this.registerCollection = db.GetCollection<RegisterModels>("AccDb");
         }
         public AccountServices(IDictionary<string, LoginModels> users) => _users = users;
 

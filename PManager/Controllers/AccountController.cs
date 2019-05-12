@@ -25,6 +25,12 @@ namespace PManager.Controllers
         {
             _accountServices = accountServices;
             _configuration = configuration;
+
+            {
+                var client = new MongoClient("mongodb://localhost:27017");
+                IMongoDatabase db = client.GetDatabase("PManager");
+                this.registerCollection = db.GetCollection<RegisterModels>("AccDb");
+            }
         }
 
         public ActionResult Index()
@@ -38,11 +44,11 @@ namespace PManager.Controllers
         }
 
         [HttpPost]
-        public ActionResult<RegisterModels> Register(RegisterModels models)
+        public IActionResult Register(RegisterModels models)
         {
-            accountServices.Register(models);
+            registerCollection.InsertOne(models);
             ViewBag.Message = "Employee added successfully!";
-            return View();
+            return RedirectToAction("Login");
         }
         [HttpGet]
         public IActionResult Login(string returnUrl)
