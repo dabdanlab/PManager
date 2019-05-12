@@ -4,24 +4,40 @@ using PManager.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
+using System.Threading.Tasks;
 
 namespace PManager.Services
 {
-    public class AccountServices
+    public class AccountServices : IAccountServices
     {
-        private readonly IMongoCollection<LoginInfromationModels> accCollection;
+        private readonly IMongoCollection<RegisterModels> registerCollection;
+        private readonly IMongoCollection<LoginModels> loginCollection;
+        private readonly IDictionary<string, LoginModels> _users;
 
         public AccountServices(IConfiguration config)
         {
             var client = new MongoClient(config.GetConnectionString("PManager"));
             var database = client.GetDatabase("PManager");
-            accCollection = database.GetCollection<LoginInfromationModels>("UserDb");
+            registerCollection = database.GetCollection<RegisterModels>("AccDb");
+        }
+        public AccountServices(IDictionary<string, LoginModels> users) => _users = users;
+
+        public Task<(bool, LoginModels)> Validate(string Email, string Password)
+        {
+            var isValid = _users.ContainsKey(Email) && string.Equals(_users[Email].Password, Password, StringComparison.Ordinal);
+            var result = (isValid, isValid ? _users[Email] : null);
+            return Task.FromResult(result);
+        }
+        public LoginModels LoginIn(LoginModels models)
+        {
+            var W = loginCollection.AsQueryable<LoginModels>().Where(w => w.Email == models.Email && w.Password == models.Password).FirstOrDefault();
+            return W;
         }
 
-        public LoginInfromationModels LoginIn(LoginInfromationModels models)
+        public RegisterModels Register(RegisterModels models)
         {
-            var W = accCollection.AsQueryable<LoginInfromationModels>().Where(w => w.Username == models.Username && w.Password == models.Password).FirstOrDefault();
-            return W;
+            registerCollection.InsertOne(models);
+            return models;
         }
     }
 }

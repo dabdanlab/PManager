@@ -16,26 +16,12 @@ namespace PManager.Controllers
     public class UsersController : Controller
     {
         private readonly UserServices _userServices;
+        
 
         public UsersController(UserServices userServices)
         {
             _userServices = userServices;
         }
-        
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        // POST: CreateUser/Create
-        [HttpPost]
-        public IActionResult Register(UserModels userModels)
-        {
-            _userServices.Register(userModels);
-            return null;
-        }
-
     }
 }
 
