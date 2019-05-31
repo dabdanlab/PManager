@@ -18,7 +18,7 @@ namespace PManager
 {
     public class Startup
     {
-        public const string CookieScheme = "YourSchemeName";
+        public const string CookieScheme = "Cookies";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,9 +30,10 @@ namespace PManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSession();
 
-            services.AddAuthentication(CookieScheme) // Sets the default scheme to cookies
-                .AddCookie(CookieScheme, options =>
+            services.AddAuthentication("Cookies") // Sets the default scheme to cookies
+                .AddCookie("Cookies", options =>
                 {
                     
                     options.AccessDeniedPath = "/Account/Profile";
@@ -41,19 +42,6 @@ namespace PManager
 
             services.AddDistributedMemoryCache();
 
-            services.AddDefaultIdentity<IdentityUser>(config =>
-            {
-                config.SignIn.RequireConfirmedEmail = true;
-            });
-
-            services.AddSession(options =>
-            {
-                // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
-                // Make the session cookie essential
-                options.Cookie.IsEssential = true;
-            });
 
             // Example of how to customize a particular instance of cookie options and
             // is able to also use other services.
@@ -78,6 +66,7 @@ namespace PManager
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseSession();
 
             app.UseMvc(routes =>

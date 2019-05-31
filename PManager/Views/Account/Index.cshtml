@@ -1,0 +1,12 @@
+﻿@model PManager.Models.RegisterModels
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="jumbotron">
+        <p>Logins sample</p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <span><i class="glyphicon glyphicon-ok text-success"></i>&nbsp; Hello @User.Identity.Name</span>
+        }
+    </div>

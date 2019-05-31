@@ -1,19 +1,41 @@
-﻿@{
-    Layout = null;
-}
+﻿@model PManager.Models.RegisterModels
 
-<!DOCTYPE html>
-
-<html>
-<body>
-    <div>
-        Welcome
-        <br />
-        <br />
-        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
-        {
-            <a href="javascript:;" onclick="document.forms[0].submit();">Logout</a>
-        }
-    </div>
-</body>
-</html>
+<div>
+    <h4>Profile</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fullname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fullname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Adress)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Adress)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Update", "Update", new { email = Model.Email })
+</div>

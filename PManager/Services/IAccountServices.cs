@@ -5,6 +5,6 @@ namespace PManager.Services
 {
     public interface IAccountServices
     {
-        Task<(bool, LoginModels)> Validate(string username, string password);
+        Task<(bool, RegisterModels)> Validate(string username, string password);
     }
 }

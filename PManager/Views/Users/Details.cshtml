@@ -1,38 +1,38 @@
-﻿@model PManager.Models.UserModels
+﻿@model PManager.Models.RegisterModels
 
 <div>
-    <h4>UserModels</h4>
+    <h4>Profile</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.DisplayNameFor(model => model.Fullname)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
+            @Html.DisplayFor(model => model.Fullname)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Phone)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
+            @Html.DisplayFor(model => model.Phone)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Adress)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Adress)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReturnUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReturnUrl)
         </dd>
     </dl>
 </div>
