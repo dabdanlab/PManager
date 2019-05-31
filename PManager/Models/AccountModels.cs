@@ -45,7 +45,7 @@ namespace PManager.Models
         
         [Required(ErrorMessage = "Bạn chưa nhập ngày tháng năm sinh")]
         [Display(Name = "Birthday")]
-        public int Birthday { get; set; }
+        public string Birthday { get; set; }
 
         public string ReturnUrl { get; set; }
 
