@@ -2,22 +2,21 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-        @Html.AntiForgeryToken()
-
+    <form action="/Account/Logout" method="post" new { id = "logoutForm", class = "navbar-right" }>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                @Html.ActionLink(User.Identity.Name, "Profile", "Account", new { email = User.Identity.Name }, null)
-            </li>|
+                <a href="/Account/Profile?email=@User.Identity.Name">Hello @User.Identity.Name!</a>
+            </li>
+            &emsp; &emsp;
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
-    }
+    </form>
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li> |
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <li><a href="/Account/Register",htmlAttributes: new { id = "registerLink" }>Register</a></li>
+        &emsp; &emsp;
+        <li><a href="/Account/Login", htmlAttributes: new { id = "loginLink" }>Login</a></li>
     </ul>
 }

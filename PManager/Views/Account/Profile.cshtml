@@ -5,37 +5,37 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+           Email:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+           @Model.Email
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fullname)
+           Fullname:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fullname)
+            @Model.Fullname
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
+            Phone:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
+           @Model.Phone
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Adress)
+            Adress:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Adress)
+           @Model.Adress
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Birthday)
+            Birthday:
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Birthday)
+           @Model.Birthday
         </dd>
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Update", "Update", new { email = Model.Email })
+    <a href="/Account/Update?email=@Model.Email">Update</a>
 </div>
